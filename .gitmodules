@@ -1,0 +1,3 @@
+[submodule "deps/isocline"]
+	path = deps/isocline
+	url = https://github.com/0x72756279/isocline
