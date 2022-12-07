@@ -152,6 +152,8 @@ void do_seek(off64_t offset) {
 ssize_t do_read(char *out_buf, size_t count) {
     ssize_t n_bytes;
 
+    if (!count) return 0;
+
     n_bytes = read(target_fd, out_buf, count);
     LOG(log_file, "read(fd=%d, count=%lu)\n", target_fd, count);
 
@@ -282,6 +284,11 @@ void print_cmd(char *cmd) {
     if (cmd_args) {
         cmd_args++;
         count = strtoul(cmd_args, NULL, 0);
+    }
+
+    if (!count) {
+        show_cmd_help(output_file, help_msg_p);
+        goto print_cmd_cleanup;
     }
 
     buf = (char*)alloc(count);
