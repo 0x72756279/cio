@@ -1,3 +1,5 @@
+.cache/
 bin/
 obj/
 history.txt
+compile_commands.json
