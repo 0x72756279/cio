@@ -228,7 +228,7 @@ void seek_cmd(char *cmd) {
 void print_cmd(char *cmd) {
     char *cmd_args, *buf = NULL, *redirection, *path, c;
     char filepath[PATH_MAX]= {0};
-    int append_mode;
+    uint8_t append_mode, color_mode, relative_mode;
     size_t count = 0;
     ssize_t n_bytes;
     FILE* fp = NULL, *stream;
@@ -313,7 +313,11 @@ void print_cmd(char *cmd) {
                 show_cmd_help(output_file, help_msg_px);
                 break;
             }
-            print_data_hex(stream, buf, n_bytes, cur_address,cmd[2] && cmd[2] == 'C');
+
+            color_mode = strchr(cmd+2, 'C') ? 1 : 0;
+            relative_mode = strchr(cmd+2, 'r') ? 1 : 0;
+
+            print_data_hex(stream, buf, n_bytes, cur_address, color_mode, relative_mode);
             break;
 
         case ' ':

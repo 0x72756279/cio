@@ -17,7 +17,8 @@
 #define OFFSET_STR "OFFSET"
 
 void print_data_hex(FILE* output_file, char *data, size_t size,
-                    uintptr_t address, int color_mode) {
+                    uintptr_t address, uint8_t color_mode,
+                    uint8_t relative_mode) {
     const size_t offset_size = sizeof(OFFSET_STR) - 1;
     const size_t ptr_size = sizeof(void*) * 2;
     const size_t offset_margin = ptr_size - offset_size + 2;
@@ -25,7 +26,7 @@ void print_data_hex(FILE* output_file, char *data, size_t size,
     char ascii[17];
     unsigned char cur;
     size_t i, j, padding_left, padding_right;
-    
+
     ascii[16] = '\0';
 
     /* header */
@@ -41,7 +42,9 @@ void print_data_hex(FILE* output_file, char *data, size_t size,
             (int)padding_right, "");
 
     /* margin from relative offset column */
-    fprintf(output_file, "%*s", (int)(ptr_size + 2 + 4), "");
+    if (relative_mode) {
+        fprintf(output_file, "%*s", (int)(ptr_size + 2 + 4), "");
+    }
 
     for (i = 0; i < 16; i++) {
         fprintf(output_file, " %02" PRIxPTR, i);
@@ -65,7 +68,9 @@ void print_data_hex(FILE* output_file, char *data, size_t size,
                 fprintf(output_file, Color_CYAN);
             }
             fprintf (output_file, "0x%.*" PRIxPTR " ", (int)ptr_size, i + address);
-            fprintf (output_file, "(+0x%.*" PRIxPTR ") ", (int)ptr_size, i);
+            if (relative_mode) {
+                fprintf (output_file, "(+0x%.*" PRIxPTR ") ", (int)ptr_size, i);
+            }
 
             if (color_mode) {
                 fprintf(output_file, Color_RESET);
@@ -81,7 +86,7 @@ void print_data_hex(FILE* output_file, char *data, size_t size,
         if (color_mode && 0 == cur) {
             fprintf(output_file, Color_RESET);
         }
-        
+
         /* printable */
         if (cur >= ' ' && cur <= '~') {
             ascii[i % 16] = cur;
@@ -110,12 +115,12 @@ void print_data_hex(FILE* output_file, char *data, size_t size,
 }
 
 uint64_t get_data_as_address(char *data, size_t size) {
-    union 
+    union
     {
         char data[9];
         uint64_t value;
     } val;
-    
+
     if (size <= 0 || size > 8) return 0;
 
     memcpy(val.data, data, size);
@@ -177,14 +182,14 @@ size_t split_str(const char *str, const char *delim, char ***splitted) {
     char *copy;
 
     if (!splitted) return 0;
-    
+
     if (!str) return 0;
 
     copy = strdup(str);
     if (!copy) return 0;
 
     count = 0;
-    
+
     c = copy;
     while (1) {
         c = strstr(c, delim);
@@ -200,7 +205,7 @@ size_t split_str(const char *str, const char *delim, char ***splitted) {
 
     if (count <= 0) {
         **splitted = copy;
-        return 2;    
+        return 2;
     }
 
     i = 0;
@@ -243,7 +248,7 @@ char* expand_path(char const *filepath) {
     remain_space = sizeof(path) -1;
 
     if (str_starts_with(str, "~/")) {
-        /* expand home */        
+        /* expand home */
         tmp = getenv("HOME");
         if (!tmp) return NULL;
 

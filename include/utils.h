@@ -42,7 +42,8 @@ uint64_t get_data_as_address(char *data, size_t size);
  * @param color_mode use colored output.
  */
 void print_data_hex(FILE* output_file, char *data, size_t size,
-                    uintptr_t address, int color_mode);
+                    uintptr_t address, uint8_t color_mode,
+                    uint8_t relative_mode);
 
 /**
  * @brief Print data as address.
