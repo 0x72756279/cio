@@ -286,21 +286,12 @@ void print_cmd(char *cmd) {
         count = strtoul(cmd_args, NULL, 0);
     }
 
-    if (!count) {
-        show_cmd_help(output_file, help_msg_p);
-        goto print_cmd_cleanup;
-    }
-
     buf = (char*)alloc(count);
     if (!buf) {
         goto print_cmd_cleanup;
     }
 
     n_bytes = do_read(buf, count);
-    if (!n_bytes) {
-        FREE(buf);
-        goto print_cmd_cleanup;
-    }
 
     clear_output(&last_output);
 
