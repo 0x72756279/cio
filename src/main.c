@@ -244,7 +244,7 @@ void print_cmd(char *cmd) {
         path = expand_path(filepath);
         if (path) {
             fp = fopen(path, append_mode ? "a+" : "w");
-            free(path);
+            FREE(path);
         } else {
             ERR(log_file, "fopen (%s)", path);
         }
@@ -291,7 +291,7 @@ void print_cmd(char *cmd) {
 
     n_bytes = do_read(buf, count);
     if (!n_bytes) {
-        free(buf);
+        FREE(buf);
         goto print_cmd_cleanup;
     }
 
@@ -337,9 +337,7 @@ print_cmd_cleanup:
         fclose(fp);
     }
 
-    if (buf) {
-        free(buf);
-    }
+    FREE(buf);
 }
 
 
