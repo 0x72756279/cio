@@ -1,0 +1,54 @@
+.TH CIO 1 cio\-VERSION
+.SH NAME
+cio \- i/o operation using the power of c
+.SH SYNOPSIS
+.B cio
+.RB [ \-hl ]
+.SH DESCRIPTION
+cio is a tui tool that allows io manipulation of "files".
+It can do the basic of operation and, as it target "files", can
+work on special files as well.
+.SH OPTIONS
+.TP
+.B \-l
+specify a file to print logs into.
+.SH USAGE
+.SS Seek
+.TP
+.B Absolute seeking
+seek to any offset in the target file.
+.B Relative seeking
+seek number of bytes forward / backward from the current address.
+.B Seeking to current
+use the current data as an address to seek to.
+.SS Read
+.TP
+.B Raw bytes
+read number of bytes from the current address.
+.TP
+.B Address
+read number of bytes and try to represent them as an address.
+.TP
+.B Hexdump
+read number of bytes and hexdump them. can be also used with colors and relative addresses.
+.SS Write
+.TP
+.B Raw bytes
+write raw bytes to the current address.
+.SS Ioctl
+.TP
+.B Hex response
+send ioctl command and get the response as a hex value.
+.TP
+.B Address response
+send ioctl command and get the response as an address.
+.SH CUSTOMIZATION
+currently there is not a special way to customize this tool.
+there is only a possibility inside the tui itself.
+.SH SEE ALSO
+.BR
+nothing yet. didn't do research.
+.SH ISSUES
+please report any if encounter.
+.SH BUGS
+Send all bug reports in Github issues.

@@ -5,6 +5,12 @@ BIN_DIR=bin
 DEPS_H=deps/isocline/include
 DEPS_C=deps/isocline/src/isocline.c
 
+VERSION = 0.0.1
+
+# paths
+PREFIX = /usr/local
+MANPREFIX = ${PREFIX}/share/man
+
 target=native
 
 ifeq ($(target), android)
@@ -18,6 +24,10 @@ else
 CC=gcc
 endif
 
+ifneq ($(OS),Windows_NT)
+	OS=$(shell uname -s)
+endif
+
 
 CFLAGS=-g -Wall -I$(INC_DIR) -I$(DEPS_H)
 LDFLAGS=
@@ -28,7 +38,14 @@ INCS=$(wildcard $(INC_DIR)/*.h) $(DEPS_H)
 
 BINARY=cio
 
-all: $(BIN_DIR)/$(BINARY)
+all: options $(BIN_DIR)/$(BINARY)
+
+options:
+	@echo ${BINARY} build options:
+	@echo "CFLAGS   = ${CFLAGS}"
+	@echo "LDFLAGS  = ${LDFLAGS}"
+	@echo "CC       = ${CC}"
+	@echo "OS       = ${OS}"
 
 android:
 
@@ -47,3 +64,13 @@ $(OBJ_DIR):
 clean:
 	rm -rf $(OBJ_DIR)
 	rm -rf $(OUTDIR)
+
+install: all
+ifneq ($(OS),Windows_NT)
+	mkdir -p ${DESTDIR}${PREFIX}/bin
+	cp -f ${BIN_DIR}/${BINARY} ${DESTDIR}${PREFIX}/bin
+	chmod 755 ${DESTDIR}${PREFIX}/bin/${BINARY}
+	mkdir -p ${DESTDIR}${MANPREFIX}/man1
+	sed "s/VERSION/${VERSION}/g" < ${BINARY}.1 > ${DESTDIR}${MANPREFIX}/man1/${BINARY}.1
+	chmod 644 ${DESTDIR}${MANPREFIX}/man1/${BINARY}.1
+endif
