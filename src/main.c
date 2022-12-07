@@ -301,7 +301,7 @@ void print_cmd(char *cmd) {
         case '?':
             /* print command help */
             show_cmd_help(output_file, help_msg_p);
-            goto print_cmd_cleanup;
+            break;
 
         case 'a':
             print_data_as_address(stream, buf, n_bytes);
@@ -311,7 +311,7 @@ void print_cmd(char *cmd) {
         case 'x':
             if (cmd[2] && cmd[2] == '?') {
                 show_cmd_help(output_file, help_msg_px);
-                goto print_cmd_cleanup;
+                break;
             }
             print_data_hex(stream, buf, n_bytes, cur_address,cmd[2] && cmd[2] == 'C');
             break;
