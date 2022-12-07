@@ -27,10 +27,10 @@ const char *help_msg_px[] = {
 };
 
 const char *help_msg_p[] = {
-	"Usage:", "p[=apx] [len]", "",
+	"Usage:", "p[=aprx] [len]", "",
 	"p   ", "[?] [len]", PRINT_DSC,
 	"pa  ", "[len]", PRINT_DSC " as address",
-	"pp  ", "[len]", "print last output",
+	"pp  ", "", "print last output",
 	"pr  ", "[reg]", "print register",
 	"px  ", "[?] [len]", PRINT_HEX_DSC,
 	NULL
@@ -75,10 +75,11 @@ const char *help_msg_global[] = {
 
 /**
  * @brief Parse and show help messages for commands.
- * 
+ *
  * @param output_file print help to this file.
  * @param help command structure to show.
  */
 void show_cmd_help(FILE* output_file, const char *help[]);
 
 #endif /*__CMD_HELP_H_ */
+
