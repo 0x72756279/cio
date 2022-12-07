@@ -246,7 +246,7 @@ void print_cmd(char *cmd) {
             fp = fopen(path, append_mode ? "a+" : "w");
             FREE(path);
         } else {
-            ERR(log_file, "fopen (%s)", path);
+            ERR(log_file, "fopen (expand_path(%s))", filepath);
         }
     }
 
