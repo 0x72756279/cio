@@ -12,6 +12,7 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <getopt.h>
+#include <signal.h>
 
 #include "../deps/isocline/include/isocline.h"
 
@@ -635,6 +636,12 @@ void main_loop() {
 
 }
 
+void signal_callback_handler(int signum) {
+    // ic_async_stop();
+   // Terminate program
+    exit(signum);
+}
+
 int main(int argc, char **argv) {
     int c, index = 0;
     char *logfile_path = NULL;
@@ -650,6 +657,8 @@ int main(int argc, char **argv) {
         usage();
         exit(1);
     }
+
+   signal(SIGINT, signal_callback_handler);
 
     target_filepath = argv[1];
 
