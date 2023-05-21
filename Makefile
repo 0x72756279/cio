@@ -29,7 +29,7 @@ ifneq ($(OS),Windows_NT)
 endif
 
 
-CFLAGS=-g -Wall -I$(INC_DIR) -I$(DEPS_H)
+CFLAGS=-Wall -I$(INC_DIR) -I$(DEPS_H)
 LDFLAGS=
 
 SRCS=$(wildcard $(SRC_DIR)/*.c) $(DEPS_C)
@@ -38,7 +38,11 @@ INCS=$(wildcard $(INC_DIR)/*.h) $(DEPS_H)
 
 BINARY=cio
 
+all: CFLAGS+= -g -fsanitize=address -DDEBUG
 all: options $(BIN_DIR)/$(BINARY)
+
+release: CFLAGS+=-s -O3
+release: options $(BIN_DIR)/$(BINARY)
 
 options:
 	@echo ${BINARY} build options:
